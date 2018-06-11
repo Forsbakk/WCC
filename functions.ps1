@@ -96,7 +96,7 @@ function Get-GroupMatches {
 }
 
 
-function New-PredictionMenu {
+function New-PredictionGroupMenu {
     Param(
         $GruppeNavn
     )
@@ -106,24 +106,60 @@ function New-PredictionMenu {
         Write-Host "$i.$($grpmenu[$i-1])"
         $menu.Add($i, $grpmenu[$i - 1])
     }
-    [int]$grpwin = Read-Host "Vinner $GruppeNavn"
-    [int]$grpsec = Read-Host "Nummer 2 $GruppeNavn"
+    [int]$grpwin = Read-Host "Vinner av $GruppeNavn"
+    [int]$grpsec = Read-Host "Nummer 2 av $GruppeNavn"
     $grpwinname = $menu.Item($grpwin)
     $grpsecname = $menu.Item($grpsec)
     Write-Output $grpwinname
     Write-Output $grpsecname
 }
 
+function New-PredictionMenu {
+    Param(
+        $Team1,
+        $Team2
+    )
+    $Teams = $Team1, $Team2
+    $menu = @{}
+    for ($i = 1; $i -le $Teams.Count; $i++) {
+        Write-Host "$i.$($Teams[$i-1])"
+        $menu.Add($i, $Teams[$i - 1])
+    }
+    [int]$win = Read-Host "Hvem vinner"
+    $winname = $menu.Item($win)
+    Write-Output $winname
+}
+
 function New-Prediction {
     $Predictor = Read-Host "Navnet til tipper"
-    $grpa = New-PredictionMenu -GruppeNavn "Gruppe A"
-    $grpb = New-PredictionMenu -GruppeNavn "Gruppe B"
-    $grpc = New-PredictionMenu -GruppeNavn "Gruppe C"
-    $grpd = New-PredictionMenu -GruppeNavn "Gruppe D"
-    $grpe = New-PredictionMenu -GruppeNavn "Gruppe E"
-    $grpf = New-PredictionMenu -GruppeNavn "Gruppe F"
-    $grpg = New-PredictionMenu -GruppeNavn "Gruppe G"
-    $grph = New-PredictionMenu -GruppeNavn "Gruppe H"
+    $grpa = New-PredictionGroupMenu -GruppeNavn "Gruppe A"
+    $grpb = New-PredictionGroupMenu -GruppeNavn "Gruppe B"
+    $grpc = New-PredictionGroupMenu -GruppeNavn "Gruppe C"
+    $grpd = New-PredictionGroupMenu -GruppeNavn "Gruppe D"
+    $grpe = New-PredictionGroupMenu -GruppeNavn "Gruppe E"
+    $grpf = New-PredictionGroupMenu -GruppeNavn "Gruppe F"
+    $grpg = New-PredictionGroupMenu -GruppeNavn "Gruppe G"
+    $grph = New-PredictionGroupMenu -GruppeNavn "Gruppe H"
+
+    $m49 = New-PredictionMenu -Team1 $grpa[0] -Team2 $grpb[1]
+    $m50 = New-PredictionMenu -Team1 $grpc[0] -Team2 $grpd[1]
+    $m51 = New-PredictionMenu -Team1 $grpb[0] -Team2 $grpa[1]
+    $m52 = New-PredictionMenu -Team1 $grpd[0] -Team2 $grpc[1]
+    $m53 = New-PredictionMenu -Team1 $grpe[0] -Team2 $grpf[1]
+    $m54 = New-PredictionMenu -Team1 $grpg[0] -Team2 $grph[1]
+    $m55 = New-PredictionMenu -Team1 $grpf[0] -Team2 $grpe[1]
+    $m56 = New-PredictionMenu -Team1 $grph[0] -Team2 $grpg[1]
+    
+    $m57 = New-PredictionMenu -Team1 $m49 -Team2 $m50
+    $m58 = New-PredictionMenu -Team1 $m53 -Team2 $m54
+    $m59 = New-PredictionMenu -Team1 $m51 -Team2 $m52
+    $m60 = New-PredictionMenu -Team1 $m55 -Team2 $m56
+
+    $m61 = New-PredictionMenu -Team1 $m57 -Team2 $m58
+    $m62 = New-PredictionMenu -Team1 $m59 -Team2 $m60
+
+    $winner = New-PredictionMenu -Team1 $m61 -Team2 $m62
+
     $properties = @{
         Navn    = $Predictor
         GrpAWin = $grpa[0]
@@ -142,6 +178,21 @@ function New-Prediction {
         GrpGSec = $grpg[1]
         GrpHWin = $grph[0]
         GrpHSec = $grph[1]
+        M49Win  = $m49
+        M50Win  = $m50
+        M51Win  = $m51
+        M52Win  = $m52
+        M53Win  = $m53
+        M54Win  = $m54
+        M55Win  = $m55
+        M56Win  = $m56
+        M57Win  = $m57
+        M58Win  = $m58
+        M59Win  = $m59
+        M60Win  = $m60
+        M61Win  = $m61
+        M62Win  = $m62
+        Winner  = $winner
     }
     $properties | ConvertTo-Json -Compress | Out-File "predictions\$Predictor.json"
 }
