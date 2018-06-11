@@ -28,7 +28,7 @@ function Get-Groups {
         $Groups = @{
             Name  = "Gruppe $($i.ToUpper())"
             Teams = $ids | ForEach-Object {
-                New-Object psobject -Property @{ ID = $_; Name = Get-Team -ID $_; Played = [int]0; Win = [int]0; Draw = [int]0; Loss = [int]0; Points = [int]0; GoalIn = [int]0; GoalOut = [int]0 }
+                New-Object psobject -Property @{ ID = $_; Name = Get-Team -ID $_; Played = [int]0; Win = [int]0; Draw = [int]0; Loss = [int]0; Points = [int]0; GoalIn = [int]0; GoalOut = [int]0; Place = [int]1 }
             }
         }
         New-Object psobject -Property $Groups
@@ -75,6 +75,9 @@ function Get-GroupStandings {
                     $home_team.Loss++
                 }
             }
+        }
+        foreach ($team in $i) {
+            
         }
     }
     return $Groups
@@ -195,4 +198,14 @@ function New-Prediction {
         Winner  = $winner
     }
     $properties | ConvertTo-Json -Compress | Out-File "predictions\$Predictor.json"
+}
+
+function Get-Points {
+    Param(
+        $File
+    )
+    $Prediction = Get-Content $File | ConvertFrom-Json
+
+    $grpResults = Get-GroupStandings
+
 }
