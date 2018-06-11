@@ -536,15 +536,15 @@
                     "type": "group",
                     "home_team": 3,
                     "away_team": 4,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 3,
                     "date": "2018-06-15T17:00:00+05:00",
                     "stadium": 12,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -552,15 +552,15 @@
                     "type": "group",
                     "home_team": 1,
                     "away_team": 3,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 5,
                     "date": "2018-06-19T21:00:00+03:00",
                     "stadium": 3,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -568,15 +568,15 @@
                     "type": "group",
                     "home_team": 4,
                     "away_team": 2,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 3,
+                    "away_result": 1,
                     "date": "2018-06-20T18:00:00+03:00",
                     "stadium": 10,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -584,15 +584,15 @@
                     "type": "group",
                     "home_team": 4,
                     "away_team": 1,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 5,
                     "date": "2018-06-25T18:00:00+04:00",
                     "stadium": 7,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 },
                 {
@@ -600,15 +600,15 @@
                     "type": "group",
                     "home_team": 2,
                     "away_team": 3,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 2,
                     "date": "2018-06-25T17:00:00+03:00",
                     "stadium": 8,
                     "channels": [
                         5,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 }
             ]
@@ -623,15 +623,15 @@
                     "type": "group",
                     "home_team": 5,
                     "away_team": 6,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 3,
+                    "away_result": 1,
                     "date": "2018-06-15T21:00:00+03:00",
                     "stadium": 11,
                     "channels": [
                         3,
                         7
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -639,15 +639,15 @@
                     "type": "group",
                     "home_team": 7,
                     "away_team": 8,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 3,
                     "date": "2018-06-15T18:00:00+03:00",
                     "stadium": 3,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -655,15 +655,15 @@
                     "type": "group",
                     "home_team": 5,
                     "away_team": 7,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 3,
+                    "away_result": 1,
                     "date": "2018-06-20T15:00:00+03:00",
                     "stadium": 1,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -671,15 +671,15 @@
                     "type": "group",
                     "home_team": 8,
                     "away_team": 6,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 2,
                     "date": "2018-06-20T21:00:00+03:00",
                     "stadium": 5,
                     "channels": [
                         4,
                         7
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -687,15 +687,15 @@
                     "type": "group",
                     "home_team": 8,
                     "away_team": 5,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 1,
                     "date": "2018-06-25T21:00:00+03:00",
                     "stadium": 9,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 },
                 {
@@ -703,15 +703,15 @@
                     "type": "group",
                     "home_team": 6,
                     "away_team": 7,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 1,
                     "date": "2018-06-25T20:00:00+02:00",
                     "stadium": 4,
                     "channels": [
                         3,
                         7
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 }
             ]
@@ -726,15 +726,15 @@
                     "type": "group",
                     "home_team": 9,
                     "away_team": 10,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 2,
                     "date": "2018-06-16T13:00:00+03:00",
                     "stadium": 5,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -742,15 +742,15 @@
                     "type": "group",
                     "home_team": 11,
                     "away_team": 12,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 3,
                     "date": "2018-06-16T19:00:00+03:00",
                     "stadium": 9,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -758,15 +758,15 @@
                     "type": "group",
                     "home_team": 9,
                     "away_team": 11,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 2,
+                    "away_result": 0,
                     "date": "2018-06-21T20:00:00+05:00",
                     "stadium": 12,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -774,15 +774,15 @@
                     "type": "group",
                     "home_team": 12,
                     "away_team": 10,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 0,
+                    "away_result": 0,
                     "date": "2018-06-21T16:00:00+04:00",
                     "stadium": 7,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -790,15 +790,15 @@
                     "type": "group",
                     "home_team": 12,
                     "away_team": 9,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 5,
+                    "away_result": 1,
                     "date": "2018-06-26T17:00:00+03:00",
                     "stadium": 1,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 },
                 {
@@ -806,15 +806,15 @@
                     "type": "group",
                     "home_team": 10,
                     "away_team": 11,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 3,
+                    "away_result": 1,
                     "date": "2018-06-26T17:00:00+02:00",
                     "stadium": 11,
                     "channels": [
                         5,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 3
                 }
             ]
@@ -877,15 +877,15 @@
                     "type": "group",
                     "home_team": 16,
                     "away_team": 14,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 1,
                     "date": "2018-06-22T18:00:00+03:00",
                     "stadium": 8,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {
@@ -948,15 +948,15 @@
                     "type": "group",
                     "home_team": 19,
                     "away_team": 20,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 1,
+                    "away_result": 1,
                     "date": "2018-06-17T16:00:00+04:00",
                     "stadium": 7,
                     "channels": [
                         4,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 1
                 },
                 {
@@ -980,15 +980,15 @@
                     "type": "group",
                     "home_team": 20,
                     "away_team": 18,
-                    "home_result": null,
-                    "away_result": null,
+                    "home_result": 3,
+                    "away_result": 1,
                     "date": "2018-06-22T20:00:00+02:00",
                     "stadium": 4,
                     "channels": [
                         3,
                         6
                     ],
-                    "finished": false,
+                    "finished": true,
                     "matchday": 2
                 },
                 {

@@ -1,0 +1,72 @@
+BODY{
+    background-color: #7b93a3;
+    color: white;
+    }
+TABLE {
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+    border-collapse: collapse;
+    color : black;
+    }
+TH {
+    border-width: 1px;
+    padding: 3px;
+    border-style: solid;
+    border-color: black;
+    background-color: #6495ED;
+    }
+TD {
+    border-width: 1px;
+    padding: 3px;
+    border-style: solid;
+    border-color: black;
+    }
+.minimal {
+    white-space: nowrap;
+    }
+TR {
+    border-width: 1px;
+    padding: 3px;
+    border-style: solid;
+    border-color: black;
+    }
+TR:Nth-Child(Even) {
+    Background-Color: #dddddd;
+    }
+TR:Nth-Child(Odd) {
+    Background-Color: white;
+    }
+TR:Hover TD {
+    Background-Color: #C1D5F8;
+    }
+
+form { 
+    width: 400px;
+}
+label { 
+    display: block;
+    float: left;
+    width : 150px;   
+}
+.status
+    {
+    width : 100%;
+}
+input[type=text] { 
+    float: left; 
+    width: 200px; 
+}
+.clear { 
+    clear: both; 
+    height: 0; 
+    line-height: 0;
+}
+.floatright { 
+    float: right;
+}
+.del-button {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
