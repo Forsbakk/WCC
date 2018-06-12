@@ -27,8 +27,10 @@ function Get-Groups {
         }
         $Groups = @{
             Name  = "Gruppe $($i.ToUpper())"
+            CurrentWinner = $null
+            CurrentRunnerUp = $null
             Teams = $ids | ForEach-Object {
-                New-Object psobject -Property @{ ID = $_; Name = Get-Team -ID $_; Played = [int]0; Win = [int]0; Draw = [int]0; Loss = [int]0; Points = [int]0; GoalIn = [int]0; GoalOut = [int]0; Place = [int]1 }
+                New-Object psobject -Property @{ ID = $_; Name = Get-Team -ID $_; Played = [int]0; Win = [int]0; Draw = [int]0; Loss = [int]0; Points = [int]0; GoalIn = [int]0; GoalOut = [int]0; GoalDiff = [int]0; Place = [int]1 }
             }
         }
         New-Object psobject -Property $Groups
@@ -76,9 +78,16 @@ function Get-GroupStandings {
                 }
             }
         }
-        foreach ($team in $i) {
-            
+        foreach ($team in $i.Teams) {
+            $team.GoalDiff = $team.GoalIn - $team.GoalOut
         }
+        $Teams = $i.Teams | Sort-Object @{expression = "Points"; Descending = $true}, @{expression = "GoalDiff"; Descending = $true}
+        $Teams[0].Place = 1
+        $Teams[1].Place = 2
+        $Teams[2].Place = 3
+        $Teams[3].Place = 4
+        $i.CurrentWinner = $Teams | Where-Object { $_.Place -eq 1 } | Select-Object -ExpandProperty ID
+        $i.CurrentRunnerUp = $Teams | Where-Object { $_.Place -eq 2 } | Select-Object -ExpandProperty ID
     }
     return $Groups
 }
@@ -196,16 +205,149 @@ function New-Prediction {
         M61Win  = $m61
         M62Win  = $m62
         Winner  = $winner
+        Points  = [int]0
     }
     $properties | ConvertTo-Json -Compress | Out-File "predictions\$Predictor.json"
+}
+
+function Get-RO16Matches {
+
+    $matchs = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_16 | Select-Object -ExpandProperty matches
+
+    foreach ($m in $matchs) {
+
+        $home_teamlo = $m.home_team -split "_"
+        $away_teamlo = $m.away_team -split "_"
+
+        if ($home_teamlo[0] -eq "winner") {
+            $home_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($home_teamlo[1])" } | Select-Object -ExpandProperty CurrentWinner)
+        }
+        elseif ($home_teamlo[0] -eq "runner") {
+            $home_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($home_teamlo[1])" } | Select-Object -ExpandProperty CurrentRunnerUp)
+        }
+
+        if ($away_teamlo[0] -eq "winner") {
+            $away_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($away_teamlo[1])" } | Select-Object -ExpandProperty CurrentWinner)
+        }
+        elseif ($away_teamlo[0] -eq "runner") {
+            $away_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($away_teamlo[1])" } | Select-Object -ExpandProperty CurrentRunnerUp)
+        }
+
+        if ($m.winner -eq "away") {
+            $winner = $away_team
+        }
+        elseif ($m.winner -eq "home") {
+            $winner = $home_team
+        }
+        else {
+            $winner = "TBD"
+        }
+
+        $properties = @{
+            Match     = $m.name
+            Hjemmelag = $home_team
+            Bortelag  = $away_team
+            Vinner    = $winner
+        }
+        New-Object psobject -Property $properties 
+    }
+}
+
+function Get-KOMatches {
+    Param(
+        $Round
+    )
+    if ($Round -eq "round_8") {
+        $prevRound = Get-RO16Matches
+    }
+    elseif ($Round -eq "round_4") {
+        $prevRound = Get-KOMatches -Round "round_8"
+    }
+    elseif ($Round -eq "round_2") {
+        $prevRound = Get-KOMatches -Round "round_4"
+    }
+
+    $matchs = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty $Round | Select-Object -ExpandProperty Matches
+    foreach ($m in $matchs) {
+        $home_team = $prevRound | Where-Object { $_.Match -eq $m.home_team } | Select-Object -ExpandProperty Vinner
+        $away_team = $prevRound | Where-Object { $_.Match -eq $m.away_team } | Select-Object -ExpandProperty Vinner
+
+        if ($m.winner -eq "away") {
+            $winner = $away_team
+        }
+        elseif ($m.winner -eq "home") {
+            $winner = $home_team
+        }
+        else {
+            $winner = "TBD"
+        }
+
+        $properties = @{
+            Match     = $m.name
+            Hjemmelag = $home_team
+            Bortelag  = $away_team
+            Vinner    = $winner
+        }
+        New-Object psobject -Property $properties 
+    }
 }
 
 function Get-Points {
     Param(
         $File
     )
-    $Prediction = Get-Content $File | ConvertFrom-Json
+    $prediction = Get-Content $File | ConvertFrom-Json
+    
+    $pRO16teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
+    $rRO16obj = Get-GroupStandings | Select-Object Name, CurrentWinner, CurrentRunnerUp
+    $rRO16teams = $rRO16obj | ForEach-Object { 
+        Get-Team -ID $_.CurrentWinner; Get-Team -ID $_.CurrentRunnerUp 
+    }
 
-    $grpResults = Get-GroupStandings
+    $ro16Points = (Compare-Object $pRO16teams $rRO16teams -ExcludeDifferent -IncludeEqual).Count
 
+    $ro16matches = $Data | Get-RO16Matches
+    foreach ($m in $ro16matches) {
+        if (!($m.Vinner -eq "TBD")) {
+            $ro16winner += $m.Vinner
+        }
+    }
+    $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
+    
+    $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)
+    
+    $rqfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_8 | Select-Object -ExpandProperty Matches
+    foreach ($m in $rqfmatches) {
+        if (!($m.Winner -eq $null)) {
+            $qfwinner += Get-KOWinner -Round round_8 -MatchID $m.name
+        }
+    }
+    $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
+    
+    $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
+
+    $rsfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_4 | Select-Object -ExpandProperty Matches
+    foreach ($m in $rsfmatches) {
+        if (!($m.Winner -eq $null)) {
+            $sfwinner += Get-KOWinner -Round round_4 -MatchID $m.name
+        }
+    }
+    $psfwinner = $prediction.M61Win, $prediction.M62Win
+    
+    $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
+
+    $rwcwinner = Get-KOWinner -Round round_2 -MatchID 64
+    $pwcwinner = $prediction.Winner
+    if ($rwcwinner -eq $pwcwinner) {
+        $winnerpoints = 5 
+    }
+    else {
+        $winnerpoints = 0
+    }
+    [int]$Points = $ro16Points + $ro16mPoints + $qfpoints + $sfpoints + $winnerpoints
+    $properties = @{
+        Navn  = $prediction.Navn
+        Poeng = $Points
+    }
+    New-Object psobject -Property $properties
 }

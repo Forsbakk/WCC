@@ -2,4 +2,4 @@
 ##
 ##Create Group.json file
 ##
-Get-Groups | ConvertTo-Json -Depth 4 | Out-File .\groups.json
+Get-Groups | ConvertTo-Json -Depth 4 -Compress | Out-File .\groups.json

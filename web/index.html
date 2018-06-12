@@ -30,10 +30,19 @@
             $("#tabs").tabs();
         });
         $(document).ready(function () {
+            $("#leaderboard").load("leaderboard.html");
+        });
+        $(document).ready(function () {
+            $("#gruppekamper").load("gruppekamper.html");
+        });
+        $(document).ready(function () {
             $("#tabeller").load("tabeller.html");
         });
         $(document).ready(function () {
-            $("#kamper").load("kamper.html");
+            $("#kokamper").load("kokamper.html");
+        });
+        $(document).ready(function () {
+            $("#predictions").load("predictions.html");
         });
     </script>
     <style>
@@ -95,20 +104,32 @@
                 <a href="#tabs-1">Leaderboard</a>
             </li>
             <li>
-                <a href="#tabs-2">Kamper</a>
+                <a href="#tabs-2">Gruppekamper</a>
             </li>
             <li>
                 <a href="#tabs-3">Tabell</a>
             </li>
+            <li>
+                <a href="#tabs-4">KO-kamper</a>
+            </li>
+            <li>
+                <a href="#tabs-5">Tippinger</a>
+            </li>
         </ul>
         <div id="tabs-1">
-            
+            <div id="leaderboard"></div>
         </div>
         <div id="tabs-2">
-            <div id="kamper"></div>
+            <div id="gruppekamper"></div>
         </div>
         <div id="tabs-3">
             <div id="tabeller"></div>
+        </div>
+        <div id="tabs-4">
+            <div id="kokamper"></div>
+        </div>
+        <div id="tabs-5">
+            <div id="predictions"></div>
         </div>
     </div>
 </body>
