@@ -1,5 +1,4 @@
-#$global:Data = Invoke-RestMethod "https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json"
-$global:Data = Get-Content ".\testdata.json" | ConvertFrom-Json
+$global:Data = Invoke-RestMethod "https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json"
 $global:Groups = Get-Content ".\groups.json" | ConvertFrom-Json
 
 
@@ -307,6 +306,7 @@ function Get-Points {
     $ro16Points = (Compare-Object $pRO16teams $rRO16teams -ExcludeDifferent -IncludeEqual).Count
 
     $ro16matches = $Data | Get-RO16Matches
+    $ro16winner = @{}
     foreach ($m in $ro16matches) {
         if (!($m.Vinner -eq "TBD")) {
             $ro16winner += $m.Vinner
@@ -317,6 +317,7 @@ function Get-Points {
     $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)
     
     $rqfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_8 | Select-Object -ExpandProperty Matches
+    $qfwinner = @{}
     foreach ($m in $rqfmatches) {
         if (!($m.Winner -eq $null)) {
             $qfwinner += Get-KOWinner -Round round_8 -MatchID $m.name
@@ -327,6 +328,7 @@ function Get-Points {
     $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
 
     $rsfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_4 | Select-Object -ExpandProperty Matches
+    $sfwinner = @{}
     foreach ($m in $rsfmatches) {
         if (!($m.Winner -eq $null)) {
             $sfwinner += Get-KOWinner -Round round_4 -MatchID $m.name

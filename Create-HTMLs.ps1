@@ -25,7 +25,7 @@ foreach ($i in $gm) {
     $Body += "<h3>$($i.Name)</h3>"
     $Body += $i.Matches | Select-Object Hjemmelag, Bortelag, HjemmelagScore, BortelagScore | ConvertTo-Html -Fragment -As Table
 }
-ConvertTo-Html -Body $Body | Out-File web\kamper.html
+ConvertTo-Html -Body $Body | Out-File web\gruppekamper.html
 
 $Body = $null
 $RO16Matches = Get-RO16Matches
