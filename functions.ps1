@@ -1,4 +1,5 @@
 $global:Data = Invoke-RestMethod "https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json"
+#$global:Data = Get-Content ".\devfiles\testdata.json" | ConvertFrom-Json
 $global:Groups = Get-Content ".\groups.json" | ConvertFrom-Json
 
 
@@ -38,6 +39,7 @@ function Get-Groups {
 
 function Get-GroupStandings {
     $gi = "a", "b", "c", "d", "e", "f", "g", "h"
+    $Groups = Get-Content ".\groups.json" | ConvertFrom-Json
 
     foreach ($grp in $gi) {
         $mi = $Data | Select-Object -ExpandProperty groups | Select-Object -ExpandProperty "$grp" | Select-Object -ExpandProperty matches
@@ -305,40 +307,34 @@ function Get-Points {
 
     $ro16Points = (Compare-Object $pRO16teams $rRO16teams -ExcludeDifferent -IncludeEqual).Count
 
-    $ro16matches = $Data | Get-RO16Matches
-    $ro16winner = @{}
+    $ro16matches = Get-RO16Matches
+    $ro16winner = $null
     foreach ($m in $ro16matches) {
-        if (!($m.Vinner -eq "TBD")) {
-            $ro16winner += $m.Vinner
-        }
+        $ro16winner += $m.Vinner
     }
     $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
     
     $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)
     
-    $rqfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_8 | Select-Object -ExpandProperty Matches
-    $qfwinner = @{}
+    $rqfmatches = Get-KOMatches -Round "round_8"
+    $qfwinner = $null
     foreach ($m in $rqfmatches) {
-        if (!($m.Winner -eq $null)) {
-            $qfwinner += Get-KOWinner -Round round_8 -MatchID $m.name
-        }
+        $qfwinner += $m.Vinner
     }
     $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
-    
+
     $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
 
-    $rsfmatches = $Data | Select-Object -ExpandProperty knockout | Select-Object -ExpandProperty round_4 | Select-Object -ExpandProperty Matches
-    $sfwinner = @{}
+    $rsfmatches = Get-KOMatches -Round "round_4"
+    $sfwinner = $null
     foreach ($m in $rsfmatches) {
-        if (!($m.Winner -eq $null)) {
-            $sfwinner += Get-KOWinner -Round round_4 -MatchID $m.name
-        }
+        $sfwinner += $m.Vinner
     }
     $psfwinner = $prediction.M61Win, $prediction.M62Win
     
     $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
 
-    $rwcwinner = Get-KOWinner -Round round_2 -MatchID 64
+    $rwcwinner = Get-KOMatches -Round "round_2" | Select-Object -ExpandProperty Vinner
     $pwcwinner = $prediction.Winner
     if ($rwcwinner -eq $pwcwinner) {
         $winnerpoints = 5 
