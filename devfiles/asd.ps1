@@ -1,0 +1,1 @@
+$global:Data = Get-Content ".\devfiles\testdata.json" | ConvertFrom-Json
