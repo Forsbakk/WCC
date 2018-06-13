@@ -1,5 +1,5 @@
-#$global:Data = Invoke-RestMethod "https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json"
-$global:Data = Get-Content ".\devfiles\testdata.json" | ConvertFrom-Json
+$global:Data = Invoke-RestMethod "https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json"
+#$global:Data = Get-Content ".\devfiles\testdata.json" | ConvertFrom-Json
 $global:Groups = Get-Content ".\groups.json" | ConvertFrom-Json
 
 
