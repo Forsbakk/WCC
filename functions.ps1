@@ -310,29 +310,53 @@ function Get-Points {
     $ro16matches = Get-RO16Matches
     $ro16winner = $null
     foreach ($m in $ro16matches) {
-        $ro16winner += $m.Vinner
+        if ($m.Vinner -eq "TBD") {}
+        else {
+            $ro16winner += $m.Vinner
+        }
     }
     $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
     
-    $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)
+    if ($ro16winner -eq $null) {
+        $ro16mPoints = 0
+    }
+    else {
+        $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)    
+    }
     
     $rqfmatches = Get-KOMatches -Round "round_8"
     $qfwinner = $null
     foreach ($m in $rqfmatches) {
-        $qfwinner += $m.Vinner
+        if ($m.Vinner -eq "TBD") {}
+        else {
+            $qfwinner += $m.Vinner
+        }
     }
     $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
 
-    $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
+    if ($qfwinner -eq $null) {
+        $qfpoints = 0
+    }
+    else {
+        $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
+    }
 
     $rsfmatches = Get-KOMatches -Round "round_4"
     $sfwinner = $null
     foreach ($m in $rsfmatches) {
-        $sfwinner += $m.Vinner
+        if ($m.Vinner -eq "TBD") {}
+        else {
+            $sfwinner += $m.Vinner    
+        }
     }
     $psfwinner = $prediction.M61Win, $prediction.M62Win
     
-    $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
+    if ($sfwinner -eq $null) {
+        $sfpoints = 0
+    }
+    else {
+        $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
+    }
 
     $rwcwinner = Get-KOMatches -Round "round_2" | Select-Object -ExpandProperty Vinner
     $pwcwinner = $prediction.Winner
