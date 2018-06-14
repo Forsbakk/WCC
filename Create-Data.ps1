@@ -1,4 +1,4 @@
-. .\functions.ps1
+﻿. .\functions.ps1
 
 $predictionFiles = Get-ChildItem ".\predictions"
 $points = foreach ($p in $predictionFiles) {
@@ -22,7 +22,7 @@ foreach ($p in $points) {
 "@
 }
 $Body += "</table>"
-$Body | Out-File "web\leaderboard.html"
+$Body | Out-File "web\leaderboard.html" -Encoding default
 
 $gs = Get-GroupStandings
 
@@ -56,7 +56,7 @@ foreach ($i in $gs) {
 </table>
 "@
 }
-$Body | Out-File "web/tabeller.html"
+$Body | Out-File "web/tabeller.html" -Encoding default
 
 $Body = $null
 $gm = Get-GroupMatches
@@ -89,7 +89,7 @@ foreach ($i in $gm) {
         }
     }
 }
-$Body | Out-File "web/gruppekamper.html"
+$Body | Out-File "web/gruppekamper.html" -Encoding default
 
 
 $Body = $null
@@ -171,7 +171,7 @@ $Body += @"
 <h1>Vinner: $Winner</h1>
 "@
 
-$Body | Out-File "web\kokamper.html"
+$Body | Out-File "web\kokamper.html" -Encoding default
 
 $Body = $null
 foreach ($p in $predictionFiles) {
@@ -283,4 +283,4 @@ foreach ($p in $predictionFiles) {
 "@
 }
 
-$Body | Out-File "web\predictions.html"
+$Body | Out-File "web\predictions.html" -Encoding default
