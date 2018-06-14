@@ -294,82 +294,71 @@ function Get-KOMatches {
 }
 
 function Get-Points {
-    Param(
-        $File
-    )
-    $prediction = Get-Content $File | ConvertFrom-Json
-    
-    $pRO16teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
+    $predictionFiles = Get-ChildItem ".\predictions"
+
     $rRO16obj = Get-GroupStandings | Select-Object Name, CurrentWinner, CurrentRunnerUp
     $rRO16teams = $rRO16obj | ForEach-Object { 
         Get-Team -ID $_.CurrentWinner; Get-Team -ID $_.CurrentRunnerUp 
     }
 
-    $ro16Points = (Compare-Object $pRO16teams $rRO16teams -ExcludeDifferent -IncludeEqual).Count
-
     $ro16matches = Get-RO16Matches
     $ro16winner = $null
     foreach ($m in $ro16matches) {
-        if ($m.Vinner -eq "TBD") {}
-        else {
-            $ro16winner += $m.Vinner
-        }
+        $ro16winner += $m.Vinner
     }
-    $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
-    
-    if ($ro16winner -eq $null) {
-        $ro16mPoints = 0
-    }
-    else {
-        $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)    
-    }
-    
+
     $rqfmatches = Get-KOMatches -Round "round_8"
     $qfwinner = $null
     foreach ($m in $rqfmatches) {
-        if ($m.Vinner -eq "TBD") {}
-        else {
-            $qfwinner += $m.Vinner
-        }
-    }
-    $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
-
-    if ($qfwinner -eq $null) {
-        $qfpoints = 0
-    }
-    else {
-        $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
+        $qfwinner += $m.Vinner
     }
 
     $rsfmatches = Get-KOMatches -Round "round_4"
     $sfwinner = $null
     foreach ($m in $rsfmatches) {
-        if ($m.Vinner -eq "TBD") {}
-        else {
-            $sfwinner += $m.Vinner    
-        }
-    }
-    $psfwinner = $prediction.M61Win, $prediction.M62Win
-    
-    if ($sfwinner -eq $null) {
-        $sfpoints = 0
-    }
-    else {
-        $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
+        $sfwinner += $m.Vinner
     }
 
     $rwcwinner = Get-KOMatches -Round "round_2" | Select-Object -ExpandProperty Vinner
-    $pwcwinner = $prediction.Winner
-    if ($rwcwinner -eq $pwcwinner) {
-        $winnerpoints = 5 
+
+    foreach ($p in $predictionFiles) {
+        $prediction = Get-Content $p.FullName | ConvertFrom-Json
+
+        $pRO16teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
+        $ro16Points = (Compare-Object $pRO16teams $rRO16teams -ExcludeDifferent -IncludeEqual).Count
+
+        if ($ro16winner -eq $null) {}
+        else {
+            $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
+            $ro16mPoints = ((Compare-Object $pro16winner $ro16winner -ExcludeDifferent -IncludeEqual).Count * 2)            
+        }
+
+        if ($qfwinner -eq $null) {}
+        else {
+            $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
+            $qfpoints = ((Compare-Object $pqfwinner $qfwinner -ExcludeDifferent -IncludeEqual).Count * 3)
+        }
+
+        if ($sfwinner -eq $null) {}
+        else {
+            $psfwinner = $prediction.M61Win, $prediction.M62Win
+            $sfpoints = ((Compare-Object $psfwinner $sfwinner -ExcludeDifferent -IncludeEqual).Count * 4)
+        }
+
+        $pwcwinner = $prediction.Winner
+        if ($rwcwinner -eq $pwcwinner) {
+            $winnerpoints = 5 
+        }
+        else {
+            $winnerpoints = 0
+        }
+
+        [int]$Points = $ro16Points + $ro16mPoints + $qfpoints + $sfpoints + $winnerpoints
+        $properties = @{
+            Navn  = $prediction.Navn
+            Poeng = $Points
+        }
+        New-Object psobject -Property $properties
     }
-    else {
-        $winnerpoints = 0
-    }
-    [int]$Points = $ro16Points + $ro16mPoints + $qfpoints + $sfpoints + $winnerpoints
-    $properties = @{
-        Navn  = $prediction.Navn
-        Poeng = $Points
-    }
-    New-Object psobject -Property $properties
+
 }
