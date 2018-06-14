@@ -70,3 +70,18 @@ input[type=text] {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+TABLE.leaderboard {
+    width: 100%;
+}
+th.points {
+    width: 5%
+}
+TABLE.groups {
+    width: 50%;
+    display: inline-table;
+    width: calc(50% - 10px);
+    margin: 5px;
+}
+td.fp {
+    width: 5%;
+}
