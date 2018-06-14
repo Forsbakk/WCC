@@ -1,9 +1,6 @@
 ﻿. .\functions.ps1
 
-$predictionFiles = Get-ChildItem ".\predictions"
-$points = foreach ($p in $predictionFiles) {
-    Get-Points -File $p.FullName
-}
+$points = Get-Points
 
 $Body = @"
 <table class=`"leaderboard`">
