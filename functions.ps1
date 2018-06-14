@@ -294,7 +294,6 @@ function Get-KOMatches {
 }
 
 function Get-Points {
-    $predictionFiles = Get-ChildItem ".\predictions"
 
     $rRO16obj = Get-GroupStandings | Select-Object Name, CurrentWinner, CurrentRunnerUp
     $rRO16teams = $rRO16obj | ForEach-Object { 
@@ -321,6 +320,7 @@ function Get-Points {
 
     $rwcwinner = Get-KOMatches -Round "round_2" | Select-Object -ExpandProperty Vinner
 
+    $predictionFiles = Get-ChildItem ".\predictions"
     foreach ($p in $predictionFiles) {
         $prediction = Get-Content $p.FullName | ConvertFrom-Json
 
