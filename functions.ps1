@@ -82,7 +82,7 @@ function Get-GroupStandings {
         foreach ($team in $i.Teams) {
             $team.GoalDiff = $team.GoalIn - $team.GoalOut
         }
-        $Teams = $i.Teams | Sort-Object @{expression = "Points"; Descending = $true}, @{expression = "GoalDiff"; Descending = $true}
+        $Teams = $i.Teams | Sort-Object @{expression = "Points"; Descending = $true}, @{expression = "GoalDiff"; Descending = $true}, @{expression = "GoalIn"; Descending = $true}
         $Teams[0].Place = 1
         $Teams[1].Place = 2
         $Teams[2].Place = 3

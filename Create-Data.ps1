@@ -32,7 +32,7 @@ foreach ($i in $gs) {
         <th colspan=`"10`">$($i.Name)</th>
     </tr>
 "@
-    $teamssorted = $i.Teams | Sort-Object @{expression = "Points"; Descending = $true}, @{expression = "GoalDiff"; Descending = $true}
+    $teamssorted = $i.Teams | Sort-Object @{expression = "Points"; Descending = $true}, @{expression = "GoalDiff"; Descending = $true}, @{expression = "GoalIn"; Descending = $true}
     foreach ($ti in $teamssorted) {
         $Body += @"
     <tr>
