@@ -173,6 +173,8 @@ function New-Prediction {
 
     $winner = New-PredictionMenu -Team1 $m61 -Team2 $m62
 
+    $topscore = Read-Host "Toppscorer"
+
     $properties = @{
         Navn    = $Predictor
         GrpAWin = $grpa[0]
@@ -207,6 +209,7 @@ function New-Prediction {
         M62Win  = $m62
         Winner  = $winner
         Points  = [int]0
+        Scorer  = $topscore
     }
     $properties | ConvertTo-Json -Compress | Out-File "predictions\$Predictor.json"
 }
