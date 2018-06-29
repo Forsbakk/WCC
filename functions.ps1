@@ -220,22 +220,8 @@ function Get-RO16Matches {
 
     foreach ($m in $matchs) {
 
-        $home_teamlo = $m.home_team -split "_"
-        $away_teamlo = $m.away_team -split "_"
-
-        if ($home_teamlo[0] -eq "winner") {
-            $home_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($home_teamlo[1])" } | Select-Object -ExpandProperty CurrentWinner)
-        }
-        elseif ($home_teamlo[0] -eq "runner") {
-            $home_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($home_teamlo[1])" } | Select-Object -ExpandProperty CurrentRunnerUp)
-        }
-
-        if ($away_teamlo[0] -eq "winner") {
-            $away_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($away_teamlo[1])" } | Select-Object -ExpandProperty CurrentWinner)
-        }
-        elseif ($away_teamlo[0] -eq "runner") {
-            $away_team = Get-Team -ID (Get-GroupStandings | Where-Object { $_.Name -eq "Gruppe $($away_teamlo[1])" } | Select-Object -ExpandProperty CurrentRunnerUp)
-        }
+        $home_team = Get-Team -ID $m.home_team
+        $away_team = Get-Team -ID $m.away_team
 
         if ($m.winner -eq "away") {
             $winner = $away_team
