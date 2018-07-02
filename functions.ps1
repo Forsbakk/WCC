@@ -272,16 +272,16 @@ function Get-Points {
         $prediction = Get-Content $p.FullName | ConvertFrom-Json
 
         $pr16Teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
-        $r16Points = (Compare-Object $pr16Teams ($r16Teams.Hjemmelag + $r16Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count
+        $r16Points = @(Compare-Object $pr16Teams ($r16Teams.Hjemmelag + $r16Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count
 
         $pr8Teams = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
-        $r8Points = ((Compare-Object $pr8Teams ($r8Teams.Hjemmelag + $r8Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 2)
+        $r8Points = (@(Compare-Object $pr8Teams ($r8Teams.Hjemmelag + $r8Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 2)
 
         $pr4Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
-        $r4Points = ((Compare-Object $pr4Teams ($r4Teams.Hjemmelag + $r4Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 3)
+        $r4Points = (@(Compare-Object $pr4Teams ($r4Teams.Hjemmelag + $r4Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 3)
 
         $pr2Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
-        $r2Points = ((Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
+        $r2Points = (@(Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
 
         If ($prediction.Winner -eq $winner) {
             $winnerpts = 5
