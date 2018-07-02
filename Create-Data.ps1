@@ -176,7 +176,7 @@ $Body = $null
 $predictionFiles = Get-ChildItem ".\predictions"
 foreach ($p in $predictionFiles) {
     $i = Get-Content $p.FullName | ConvertFrom-Json
-    $scr = $points | Where-Object { $_.Navn -eq $i.Navn } | Select-Object -ExpandProperty Poeng
+    $scr = $iPoints | Where-Object { $_.Navn -eq $i.Navn } | Select-Object -ExpandProperty Poeng
     $Body += @"
 <h2>$($i.Navn) - $scr poeng</h2>
 <table class=`"groups`">

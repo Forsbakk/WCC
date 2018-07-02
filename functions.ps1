@@ -258,7 +258,7 @@ function Get-Winner {
 }
 
 function Get-Points {
-
+    
     $r16Teams = Get-KOMatches | Where-Object { $_.Round -eq "round_16" }
     $r8Teams = Get-KOMatches | Where-Object { $_.Round -eq "round_8" }
     $r4Teams = Get-KOMatches | Where-Object { $_.Round -eq "round_4" }
@@ -268,34 +268,29 @@ function Get-Points {
     $predictionFiles = Get-ChildItem ".\predictions"
 
     foreach ($p in $predictionFiles) {
+
         $prediction = Get-Content $p.FullName | ConvertFrom-Json
 
-        $pRO16teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
-        $ro16Points = (Compare-Object $pRO16teams $r16Teams.Hjemmelag -ExcludeDifferent -IncludeEqual).Count + (Compare-Object $pRO16teams $r16Teams.Bortelag -ExcludeDifferent -IncludeEqual).Count
+        $pr16Teams = $prediction.GrpAWin, $prediction.GrpASec, $prediction.GrpBWin, $prediction.GrpBSec, $prediction.GrpCWin, $prediction.GrpCSec, $prediction.GrpDWin, $prediction.GrpDSec, $prediction.GrpEWin, $prediction.GrpESec, $prediction.GrpFWin, $prediction.GrpFSec, $prediction.GrpGWin, $prediction.GrpGSec, $prediction.GrpHWin, $prediction.GrpHSec
+        $r16Points = (Compare-Object $pr16Teams ($r16Teams.Hjemmelag + $r16Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count
 
-        $pro16winner = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
-        $ro16mPoints = ((Compare-Object $pro16winner $r8Teams.Hjemmelag -ExcludeDifferent -IncludeEqual).Count * 2) + ((Compare-Object $pro16winner $r8Teams.Bortelag -ExcludeDifferent -IncludeEqual).Count * 2)         
+        $pr8Teams = $prediction.M49Win, $prediction.M50Win, $prediction.M51Win, $prediction.M52Win, $prediction.M53Win, $prediction.M54Win, $prediction.M55Win, $prediction.M56Win
+        $r8Points = ((Compare-Object $pr8Teams ($r8Teams.Hjemmelag + $r8Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 2)
 
+        $pr4Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
+        $r4Points = ((Compare-Object $pr4Teams ($r4Teams.Hjemmelag + $r4Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 3)
 
+        $pr2Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
+        $r2Points = ((Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
 
-        $pqfwinner = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
-        $qfpoints = ((Compare-Object $pqfwinner $r4Teams.Hjemmelag -ExcludeDifferent -IncludeEqual).Count * 4) + ((Compare-Object $pqfwinner $r4Teams.Bortelag -ExcludeDifferent -IncludeEqual).Count * 4)
-
-
-
-        $psfwinner = $prediction.M61Win, $prediction.M62Win
-        $sfpoints = ((Compare-Object $psfwinner $r2Teams.Hjemmelag -ExcludeDifferent -IncludeEqual).Count * 8) + ((Compare-Object $psfwinner $r2Teams.Bortelag -ExcludeDifferent -IncludeEqual).Count * 8)
-
-
-        $pwcwinner = $prediction.Winner
-        if ($pwcwinner -eq $winner) {
-            $winnerpoints = 16
+        If ($prediction.Winner -eq $winner) {
+            $winnerpts = 5
         }
         else {
-            $winnerpoints = 0
+            $winnerpts = 0
         }
 
-        [int]$Points = $ro16Points + $ro16mPoints + $qfpoints + $sfpoints + $winnerpoints
+        [int]$Points = $r16Points + $r8Points + $r4Points + $r2Points + $winnerpts
         $properties = @{
             Navn  = $prediction.Navn
             Poeng = [int]$Points
