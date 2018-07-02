@@ -1,6 +1,6 @@
 ﻿. .\functions.ps1
 
-$points = Get-Points
+$iPoints = Get-Points
 
 $Body = @"
 <table class=`"leaderboard`">
@@ -9,8 +9,8 @@ $Body = @"
         <th>Navn</th>
     </tr>
 "@
-$points = $points | Sort-Object Poeng -Descending
-foreach ($p in $points) {
+$iPoints = $iPoints | Sort-Object Poeng -Descending
+foreach ($p in $iPoints) {
     $Body += @"
     <tr>
         <td>$($p.Poeng)</td>
@@ -90,11 +90,13 @@ $Body | Out-File "web/gruppekamper.html" -Encoding default
 
 
 $Body = $null
-$RO16Matches = Get-RO16Matches
-$RO8Matches = Get-KOMatches -Round "round_8"
-$RO4Matches = Get-KOMatches -Round "round_4"
-$RO2Matches = Get-KOMatches -Round "round_2"
-$Winner = Get-KOMatches -Round "round_2" | Select-Object -ExpandProperty Vinner
+$KOMatches = Get-KOMatches
+
+$R16 = $KOMatches | Where-Object { $_.Round -eq "round_16" }
+$R8 = $KOMatches | Where-Object { $_.Round -eq "round_8" }
+$R4 = $KOMatches | Where-Object { $_.Round -eq "round_4" }
+$R2 = $KOMatches | Where-Object { $_.Round -eq "round_2" }
+$Winner = Get-Winner
 
 $Body += @"
 <table class=`"groups`">
@@ -103,7 +105,7 @@ $Body += @"
         <th>Vinner</th>
     </tr>
 "@
-foreach ($m in $RO16Matches) {
+foreach ($m in $R16) {
     $Body += @"
     <tr>
         <td>$($m.Hjemmelag)</td>
@@ -120,7 +122,7 @@ $Body += @"
         <th>Vinner</th>
     </tr>
 "@
-foreach ($m in $RO8Matches) {
+foreach ($m in $R8) {
     $Body += @"
     <tr>
         <td>$($m.Hjemmelag)</td>
@@ -137,7 +139,7 @@ $Body += @"
         <th>Vinner</th>
     </tr>
 "@
-foreach ($m in $RO4Matches) {
+foreach ($m in $R4) {
     $Body += @"
     <tr>
         <td>$($m.Hjemmelag)</td>
@@ -154,7 +156,7 @@ $Body += @"
         <th>Vinner</th>
     </tr>
 "@
-foreach ($m in $RO2Matches) {
+foreach ($m in $R2) {
     $Body += @"
     <tr>
         <td>$($m.Hjemmelag)</td>
