@@ -279,6 +279,7 @@ foreach ($p in $predictionFiles) {
     </tr>
 </table>
 <h2>Vinner: $($i.Winner)</h2>
+<h4>Toppscorer: $($i.Scorer)
 <hr>
 "@
 }
