@@ -299,7 +299,12 @@ function Get-Points {
         $pr2Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
         $r2Points = (@(Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
 
-        If ($Toppscorer.Toppscorer -eq "Harry Kane")
+        If ($prediction.Scorer -eq $Toppscorer.Toppscorer) {
+            $scorerpts = 5
+        }
+        else {
+            $scorerpts = 0
+        }
 
         If ($prediction.Winner -eq $winner) {
             $winnerpts = 5
@@ -308,7 +313,7 @@ function Get-Points {
             $winnerpts = 0
         }
 
-        [int]$Points = $r16Points + $r8Points + $r4Points + $r2Points + $winnerpts
+        [int]$Points = $r16Points + $r8Points + $r4Points + $r2Points + $winnerpts + $scorerpts
         $properties = @{
             Navn  = $prediction.Navn
             Poeng = [int]$Points
