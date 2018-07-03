@@ -20,7 +20,7 @@ foreach ($p in $iPoints) {
 "@
 }
 $Body += "</table>"
-$Body | Out-File "web\leaderboard.html" -Encoding default
+$Body | Out-File "web\leaderboard.html" -Encoding utf8
 
 $gs = Get-GroupStandings
 
@@ -54,7 +54,7 @@ foreach ($i in $gs) {
 </table>
 "@
 }
-$Body | Out-File "web/tabeller.html" -Encoding default
+$Body | Out-File "web/tabeller.html" -Encoding utf8
 
 $Body = $null
 $gm = Get-GroupMatches
@@ -87,7 +87,7 @@ foreach ($i in $gm) {
         }
     }
 }
-$Body | Out-File "web/gruppekamper.html" -Encoding default
+$Body | Out-File "web/gruppekamper.html" -Encoding utf8
 
 
 $Body = $null
@@ -171,10 +171,10 @@ $Body += @"
 <h1>Vinner: $Winner</h1>
 <h4>Toppscorer: $($Toppscorer.Toppscorer)<br>
 Land: $($Toppscorer.Land)<br>
-M&aringl: $($Toppscorer.Goals)</h4>
+Mål: $($Toppscorer.Goals)</h4>
 "@
 
-$Body | Out-File "web\kokamper.html" -Encoding default
+$Body | Out-File "web\kokamper.html" -Encoding utf8
 
 $Body = $null
 $predictionFiles = Get-ChildItem ".\predictions"
@@ -288,4 +288,4 @@ foreach ($p in $predictionFiles) {
 "@
 }
 
-$Body | Out-File "web\predictions.html" -Encoding default
+$Body | Out-File "web\predictions.html" -Encoding utf8
