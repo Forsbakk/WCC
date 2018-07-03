@@ -11,6 +11,21 @@ function Get-Team {
     return $Team
 }
 
+function Get-TopScorer {
+    $page = Invoke-WebRequest -Uri "https://www.eurosport.no/fotball/vm/2018/standingperson.shtml"
+
+    $table = $page.ParsedHtml.body.getElementsByClassName('standing-table') | Select-Object -ExpandProperty Rows
+    $Toppscorer = $table[1].cells[1].innerText
+    $Toppscorer = $Toppscorer.Split([Environment]::NewLine)
+    
+    $properties = @{
+        Toppscorer = $Toppscorer[0]
+        Land       = $Toppscorer[2]
+        Goals      = $table[1].cells[4].innerText
+    }
+    New-Object psobject -Property $properties
+}
+
 function Get-Groups {
     $Group = "a", "b", "c", "d", "e", "f", "g", "h"
     
@@ -264,6 +279,7 @@ function Get-Points {
     $r4Teams = Get-KOMatches | Where-Object { $_.Round -eq "round_4" }
     $r2Teams = Get-KOMatches | Where-Object { $_.Round -eq "round_2" }
     $winner = Get-Winner
+    $Toppscorer = Get-TopScorer
 
     $predictionFiles = Get-ChildItem ".\predictions"
 
@@ -282,6 +298,8 @@ function Get-Points {
 
         $pr2Teams = $prediction.M57Win, $prediction.M58Win, $prediction.M59Win, $prediction.M60Win
         $r2Points = (@(Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
+
+        If ($Toppscorer.Toppscorer -eq "Harry Kane")
 
         If ($prediction.Winner -eq $winner) {
             $winnerpts = 5

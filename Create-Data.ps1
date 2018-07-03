@@ -1,6 +1,7 @@
 ﻿. .\functions.ps1
 
 $iPoints = Get-Points
+$Toppscorer = Get-TopScorer
 
 $Body = @"
 <table class=`"leaderboard`">
@@ -168,6 +169,9 @@ foreach ($m in $R2) {
 $Body += @"
 </table>
 <h1>Vinner: $Winner</h1>
+<h4>Toppscorer: $($Toppscorer.Toppscorer)<br>
+Land: $($Toppscorer.Land)<br>
+M&aringl: $($Toppscorer.Goals)</h4>
 "@
 
 $Body | Out-File "web\kokamper.html" -Encoding default
