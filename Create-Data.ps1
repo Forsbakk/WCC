@@ -178,6 +178,7 @@ $Body | Out-File "web\kokamper.html" -Encoding utf8
 
 $Body = $null
 $predictionFiles = Get-ChildItem ".\predictions"
+
 foreach ($p in $predictionFiles) {
     $i = Get-Content $p.FullName | ConvertFrom-Json
     $scr = $iPoints | Where-Object { $_.Navn -eq $i.Navn } | Select-Object -ExpandProperty Poeng
