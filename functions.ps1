@@ -297,7 +297,7 @@ function Get-Points {
         $r4Points = (@(Compare-Object $pr4Teams ($r4Teams.Hjemmelag + $r4Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 3)
 
         $pr2Teams = $prediction.M61Win, $prediction.M62Win
-        $r2Points = (@(Compare-Object $pr2Teams ($r2Teams.Hjemmelag + $r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
+        $r2Points = (@(Compare-Object $pr2Teams ($r2Teams.Hjemmelag,$r2Teams.Bortelag) -ExcludeDifferent -IncludeEqual).Count * 4)
 
         If ($prediction.Scorer -eq $Toppscorer.Toppscorer) {
             $scorerpts = 5
